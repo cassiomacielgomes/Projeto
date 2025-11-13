@@ -11,31 +11,22 @@ import './assets/css/post.css'
 import Categoria from './pages/Categoria'
 import SubCategoria from './pages/SubCategorias'
 import CategoriaPosts from './pages/CategoriaPost'
-
+import Admin from './pages/admin/admin'
+import FormCategoria from './pages/admin/components/FormCategoria'
 
 function App() {
   return(
     <Router>
       <Cabecalho />
       <Routes>
-        {/* Use element={Componente /} para renderizar */}
+        <Route path='/admin' element={<Admin/>}/>
+        <Route path='/admin/NovaCategoria' element={<FormCategoria />}/>
+        <Route path='/admin/:id' element={<FormCategoria />}/>
         <Route path='/' element={<Home/>}/>
-        <Route path='/posts/:id' element={<Post/>}/>
+        <Route path='/posts/:id' element={<Post/>}/> 
 
-        {/* 
-          Esta é a rota pai. Ela renderiza o <Categoria />
-        */}
-        <Route path='/categorias/:id' element={<Categoria/>}>
-          {/* Esta é a rota "filho" de índice (index).
-              Ela é renderizada dentro do <Outlet> quando a URL
-              é exatamente /categoria/:id 
-            */}
-            <Route index element={<CategoriaPosts />} />
-            
-            {/* Esta é a rota "filho" da subcategoria.
-              Ela é renderizada dentro do <Outlet> quando a URL
-              é /categoria/:id/:subcategoria 
-            */}
+        <Route path='/categorias/:id' element={<Categoria/>}>          
+            <Route index element={<CategoriaPosts />} />            
             <Route path=':subcategoria' element={<SubCategoria />} />
         </ Route>
 
