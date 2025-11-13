@@ -15,11 +15,11 @@ const ListaCatAdmin = () => {
     const excluir = (CategoriaDel) => {
         api.delete(`categorias/${CategoriaDel.id}/`)
             .then(() => {
-            // Remove a categoria do estado local para atualizar a UI
-            const listaCategorias = categorias
-                .filter(categoria => categoria.id !== CategoriaDel.id);
-            setCategorias([...listaCategorias]);
-        });
+                // Remove a categoria do estado local para atualizar a UI
+                const listaCategorias = categorias
+                    .filter(categoria => categoria.id !== CategoriaDel.id);
+                setCategorias([...listaCategorias]);
+            });
     }
 
     return (
@@ -28,9 +28,9 @@ const ListaCatAdmin = () => {
                 <thead>
                     <tr>
                         <th className="tabela__coluna--g">Categoria</th>
-                        <th colSpan="3" className="tabela__coluna--p tabela__alinhamento--direita">
+                        <th colSpan="4" className="tabela__coluna--p tabela__alinhamento--direita">
                             <Link to="/admin/NovaCategoria">
-                                <Button variant="contained" fullWidth sx={{ marginTop: 1 }}>
+                                <Button variant="contained"  sx={{ marginTop: 1 }}>
                                     Nova Categoria
                                 </Button>
                             </Link>
@@ -52,11 +52,20 @@ const ListaCatAdmin = () => {
                                             Editar
                                         </Button>
                                     </Link>
-
+                                </td>
+                                <td>
                                     {/* Botão EXCLUIR */}
                                     <Link to="/admin" style={{ textDecoration: 'none' }}>
                                         <Button type="button" variant="contained" color="error" sx={{ margin: "0 0.25rem" }} onClick={() => excluir(categoria)}>
                                             Excluir
+                                        </Button>
+                                    </Link>
+                                </td>
+                                <td>
+                                    {/* Botão SUBCATEGORIA */}
+                                    <Link to={`/admin/categoria/${categoria.id}`} style={{ textDecoration: 'none' }}>
+                                        <Button type="button" variant="outlined" color="error" sx={{ margin: "0 0.25rem" }}>
+                                            SubCategoria
                                         </Button>
                                     </Link>
 
