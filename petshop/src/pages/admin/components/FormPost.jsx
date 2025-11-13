@@ -15,6 +15,8 @@ const FormPost = () => {
 
     const [categorias, setCategorias] = useState([]);
 
+    const [subcategoria, setSubcategoria] = useState('');
+
     // Busca as categorias para o Select
     useEffect(() => {
         api.get("categorias/")
@@ -39,29 +41,40 @@ const FormPost = () => {
     const CadPost = (evento) => {
         evento.preventDefault();
 
-        const postData = {
-            title: title,
-            metadescription: metadescription,
-            body: body,
-            categoria: categoria
-        };
-
         if (id) {
-            // Modo Edição (PUT) 
-            api.put(`/posts/${id}`, postData)
+            api
+                .put(`/posts/${id}`, {
+                    title: title,
+                    metadescription: metadescription,
+                    body: body,
+                    categoria: categoria,
+                    subcategoria: subcategoria,
+                })
                 .then(() => {
-                    alert("Sucesso na atualização!");
-                    navigate("/admin/posts");
+                    alert('Sucesso na atualização!');
+                    navigate('/admin/posts', { replace: true });
                 });
         } else {
-            // Modo Cadastro (POST) 
-            api.post(`/posts`, postData)
+            api
+                .post(`/posts`, {
+                    title: title,
+                    metadescription: metadescription,
+                    body: body,
+                    categoria: categoria,
+                    subcategoria: subcategoria,
+                })
                 .then(() => {
-                    alert("Cadastro realizado com Sucesso!");
-                    navigate("/admin/posts/");
+                    alert('Cadastro realizado com Sucesso!');
+                    navigate('/admin/posts/', { replace: true });
                 });
         }
     };
+
+    //Lista de Subcategorias
+    const categoriaSelecionada = categorias.find((cat) => cat.id === categoria);
+    const subcategoriasDisponiveis = categoriaSelecionada
+        ? categoriaSelecionada.subcategorias
+        : [];
 
     return (
         <>
@@ -125,7 +138,22 @@ const FormPost = () => {
                                         ))}
                                     </Select>{" "}
                                 </FormControl>
-
+                                {categoria && (
+                                    <FormControl margin="dense" fullWidth>
+                                        <InputLabel id="select-subcategoria">Subcategoria</InputLabel>
+                                        <Select
+                                            labelId="select-subcategoria"
+                                            value={subcategoria || ''}
+                                            onChange={(e) => setSubcategoria(e.target.value)}
+                                        >
+                                            {subcategoriasDisponiveis.map((sub) => (
+                                                <MenuItem key={sub} value={sub}>
+                                                    {sub}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                )}
                                 <br />
 
                                 <Button
